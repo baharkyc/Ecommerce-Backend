@@ -36,10 +36,10 @@ public class Product {
     private BigDecimal price;
 
     @Column(name = "stock")
-    private Long stock;
+    private String stock;
 
-    @Column(name = "store_id")
-    private Long storeId;
+    @Column(name = "review")
+    private String review;
 
     @Column(name = "category_id")
     private Long categoryId;
@@ -50,10 +50,8 @@ public class Product {
     @DecimalMax(value = "5.0", inclusive = true)
     private Float rating;
 
-    @NotNull
-    @ElementCollection
-    @Column(name = "images")
-    private  List<String> images;
+    @Column(name = "image")
+    private String image;
 
     @ManyToMany(mappedBy = "products")
     private List<Order> orders;

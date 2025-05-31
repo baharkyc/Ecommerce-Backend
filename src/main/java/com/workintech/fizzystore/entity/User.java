@@ -39,11 +39,12 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @Column(name = "role_id")
-    @NotNull
-    @NotBlank
-    @NotEmpty
-    private Long roleId;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+    @Column(name = "deneme")
+    private String deneme;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Address> addressList;

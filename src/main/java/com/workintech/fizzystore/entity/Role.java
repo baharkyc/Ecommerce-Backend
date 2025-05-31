@@ -3,6 +3,7 @@ package com.workintech.fizzystore.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -23,6 +24,9 @@ public class Role {
 
     @Column(name = "code")
     private String code;
+
+    @OneToMany(mappedBy = "role")
+    private List<User> users;
 
     @Override
     public boolean equals(Object obj) {

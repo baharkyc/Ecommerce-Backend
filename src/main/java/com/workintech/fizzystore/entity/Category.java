@@ -27,5 +27,10 @@ public class Category {
     @Size(max = 100)
     private String categoryName;
 
+    @Column (name =  "image_url")
+    private String imageUrl;
+
+    @Column (name = "rating")
+    private Float rating;
 
 }
