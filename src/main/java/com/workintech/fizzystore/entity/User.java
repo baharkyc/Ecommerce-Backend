@@ -43,9 +43,6 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @Column(name = "deneme")
-    private String deneme;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Address> addressList;
 

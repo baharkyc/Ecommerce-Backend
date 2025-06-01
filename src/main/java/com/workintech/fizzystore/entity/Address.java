@@ -76,17 +76,6 @@ public class Address {
     @JoinColumn(name = "user_id")
     private User user;
 
-    /*"id": 3,
-        "user_id": 21,
-        "title": "sdf",
-        "name": "sdf",
-        "surname": "sdf",
-        "phone": "sdf",
-        "city": "sdf",
-        "district": "sdf",
-        "neighborhood": "sdf",
-        "address": "d"*/
-
     @Override
     public boolean equals(Object obj) {
         if ( obj == this)
