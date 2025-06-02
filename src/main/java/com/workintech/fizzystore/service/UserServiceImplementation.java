@@ -1,6 +1,5 @@
 package com.workintech.fizzystore.service;
 
-import com.workintech.fizzystore.entity.Role;
 import com.workintech.fizzystore.entity.User;
 import com.workintech.fizzystore.exceptions.FizzyStoreException;
 import com.workintech.fizzystore.repository.UserRepository;
@@ -46,10 +45,10 @@ public class UserServiceImplementation implements UserService{
             userToUpdate.setEmail(user.getEmail());
         }
         if (user.getPassword() != null) {
-            userToUpdate.setPassword(user.getPassword());
+            userToUpdate.setPassword(user.getPassword()); //will be encrypted
         }
-        if (user.getRole() != null) {
-            userToUpdate.setRole(user.getRole());
+        if (user.getRoles() != null) {
+            userToUpdate.setRoles(user.getRoles());
         }
         if (user.getAddressList() != null) {
             userToUpdate.setAddressList(user.getAddressList());
