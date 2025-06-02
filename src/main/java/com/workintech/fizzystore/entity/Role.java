@@ -2,6 +2,7 @@ package com.workintech.fizzystore.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.List;
 import java.util.Objects;
@@ -12,8 +13,8 @@ import java.util.Objects;
 @Setter
 @ToString
 @Entity
-@Table(name = "role", schema = "fizzy")
-public class Role {
+@Table(name = "role")
+public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +26,13 @@ public class Role {
     @Column(name = "code")
     private String code;
 
-    @OneToMany(mappedBy = "role")
+    @ManyToMany(mappedBy = "roles")
     private List<User> users;
+
+    @Override
+    public String getAuthority() {
+        return code;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -44,4 +50,6 @@ public class Role {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+
 }
