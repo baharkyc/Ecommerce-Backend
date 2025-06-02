@@ -15,7 +15,7 @@ import java.util.Objects;
 @Setter
 @ToString(exclude = "password") // Don't show password
 @Entity
-@Table(name = "store_user", schema = "fizzy")
+@Table(name = "store_user")
 public class StoreUser {
 
     @Id

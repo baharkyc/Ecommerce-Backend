@@ -13,7 +13,7 @@ import lombok.*;
 @Setter
 @ToString
 @Entity
-@Table(name = "category", schema = "fizzy")
+@Table(name = "category")
 public class Category {
 
     @Id

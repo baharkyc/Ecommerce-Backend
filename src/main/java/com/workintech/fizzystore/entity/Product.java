@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @ToString
 @Entity
-@Table(name = "product", schema = "fizzy")
+@Table(name = "product")
 public class Product {
 
     @Id

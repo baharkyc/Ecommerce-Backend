@@ -15,7 +15,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @Entity
-@Table(name = "address", schema = "fizzy")
+@Table(name = "address")
 public class Address {
 
     @Id

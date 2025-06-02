@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @ToString
 @Entity
-@Table(name = "credit_card", schema = "fizzy")
+@Table(name = "credit_card")
 public class CreditCard {
 
     @Id
