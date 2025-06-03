@@ -5,6 +5,7 @@ import com.workintech.fizzystore.exceptions.FizzyStoreException;
 import com.workintech.fizzystore.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 public class UserServiceImplementation implements UserService{
 
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<User> getAll() {
@@ -45,7 +47,8 @@ public class UserServiceImplementation implements UserService{
             userToUpdate.setEmail(user.getEmail());
         }
         if (user.getPassword() != null) {
-            userToUpdate.setPassword(user.getPassword()); //will be encrypted
+            String encodedPassword = passwordEncoder.encode(user.getPassword());
+            userToUpdate.setPassword(encodedPassword);
         }
         if (user.getRoles() != null) {
             userToUpdate.setRoles(user.getRoles());
