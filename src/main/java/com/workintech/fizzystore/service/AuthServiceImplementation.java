@@ -49,4 +49,25 @@ public class AuthServiceImplementation implements AuthService{
 
         return userRepository.save(user);
     }
+
+    @Override
+    public User login(String email, String password) {
+
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        if(optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                //token will be added
+                return user;
+            } else {
+                throw new FizzyStoreException("Invalid password.", HttpStatus.UNAUTHORIZED);
+            }
+        } else {
+            throw new FizzyStoreException("User not found with email: " + email, HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 }
