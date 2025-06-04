@@ -5,7 +5,6 @@ import com.workintech.fizzystore.entity.User;
 import com.workintech.fizzystore.exceptions.FizzyStoreException;
 import com.workintech.fizzystore.repository.RoleRepository;
 import com.workintech.fizzystore.repository.UserRepository;
-import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
