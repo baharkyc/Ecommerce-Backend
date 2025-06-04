@@ -4,10 +4,14 @@ import com.workintech.fizzystore.entity.Order;
 import com.workintech.fizzystore.entity.Product;
 import com.workintech.fizzystore.exceptions.FizzyStoreException;
 import com.workintech.fizzystore.repository.ProductRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
+@AllArgsConstructor
 public class ProductServiceImplementation implements ProductService{
 
     private ProductRepository productRepository;
