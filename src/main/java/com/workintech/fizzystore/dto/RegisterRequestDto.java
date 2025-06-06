@@ -1,7 +1,6 @@
 package com.workintech.fizzystore.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
+public class RegisterRequestDto {
 
     private String name;
 
@@ -24,7 +23,6 @@ public class RegisterRequest {
     @NotNull
     @NotBlank
     @NotEmpty
-    @JsonIgnore
     private String password;
 
 
