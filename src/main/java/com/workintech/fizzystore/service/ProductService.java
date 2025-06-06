@@ -12,4 +12,7 @@ public interface ProductService {
     Product create(Product product);
     Product update(Long id, Product product);
     void deleteById(Long id);
+
+    List<Product> sortByPriceDesc();
+    List<Product> sortByPriceAsc();
 }

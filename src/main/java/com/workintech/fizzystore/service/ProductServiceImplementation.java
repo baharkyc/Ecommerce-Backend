@@ -77,4 +77,14 @@ public class ProductServiceImplementation implements ProductService{
         );
         productRepository.deleteById(id);
     }
+
+    @Override
+    public List<Product> sortByPriceAsc() {
+        return productRepository.findAllByOrderByPriceAsc();
+    }
+
+    @Override
+    public List<Product> sortByPriceDesc() {
+        return productRepository.findAllByOrderByPriceDesc();
+    }
 }
