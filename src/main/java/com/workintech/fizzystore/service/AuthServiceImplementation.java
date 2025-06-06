@@ -1,5 +1,7 @@
 package com.workintech.fizzystore.service;
 
+import com.workintech.fizzystore.dto.LoginResponseDto;
+import com.workintech.fizzystore.dto.RegisterResponse;
 import com.workintech.fizzystore.entity.Role;
 import com.workintech.fizzystore.entity.User;
 import com.workintech.fizzystore.exceptions.FizzyStoreException;
@@ -15,9 +17,15 @@ import java.util.Set;
 @Service
 public class AuthServiceImplementation implements AuthService{
 
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public AuthServiceImplementation(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this. passwordEncoder = passwordEncoder;
+    }
 
 
     @Override
@@ -30,12 +38,12 @@ public class AuthServiceImplementation implements AuthService{
 
         String encodedPassword = passwordEncoder.encode(password);
 
-        Optional<Role> userRole = roleRepository.findAuthority("USER");
+        Optional<Role> userRole = roleRepository.findAuthority("CUSTOMER");
 
         if(userRole.isEmpty()) {
             Role role = new Role();
-            role.setName("user");
-            role.setCode("USER");
+            role.setName("Customer");
+            role.setCode("CUSTOMER");
 
             userRole = Optional.of(roleRepository.save(role));
         }
