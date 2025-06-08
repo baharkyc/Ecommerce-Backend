@@ -1,7 +1,9 @@
 package com.workintech.fizzystore.service;
 
+import com.workintech.fizzystore.config.JwtUtil;
 import com.workintech.fizzystore.dto.LoginResponseDto;
 import com.workintech.fizzystore.dto.RegisterResponse;
+import com.workintech.fizzystore.dto.VerifyResponseDto;
 import com.workintech.fizzystore.entity.Role;
 import com.workintech.fizzystore.entity.User;
 import com.workintech.fizzystore.exceptions.FizzyStoreException;
@@ -20,11 +22,13 @@ public class AuthServiceImplementation implements AuthService{
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    public AuthServiceImplementation(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public AuthServiceImplementation(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this. passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
 
@@ -58,7 +62,7 @@ public class AuthServiceImplementation implements AuthService{
     }
 
     @Override
-    public User login(String email, String password) {
+    public LoginResponseDto login(String email, String password) {
 
         Optional<User> optionalUser = userRepository.findByEmail(email);
 
@@ -66,13 +70,31 @@ public class AuthServiceImplementation implements AuthService{
             User user = optionalUser.get();
 
             if (passwordEncoder.matches(password, user.getPassword())) {
-                //token will be added
-                return user;
+                //token generation
+                String token = jwtUtil.generateToken(user.getEmail());
+
+                return new LoginResponseDto("Login successful",user.getName(), token);
             } else {
                 throw new FizzyStoreException("Invalid password.", HttpStatus.UNAUTHORIZED);
             }
         } else {
             throw new FizzyStoreException("User not found with email: " + email, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public VerifyResponseDto verifyToken(String token) {
+
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        if (jwtUtil.validateToken(token)) {
+            String email = jwtUtil.extractEmail(token);
+            return new VerifyResponseDto(email, token, "Token is valid.");
+
+        } else {
+
+            return new VerifyResponseDto(null, null, "Token is invalid.");
         }
     }
 
