@@ -1,6 +1,6 @@
 # Ecommerce Backend
 
-This is a backend project for an e-commerce application developed using **Spring Boot**. The system is designed to manage core functionalities of an online store including user authentication, product management, category hierarchy, and order handling.
+This is a backend project for a complete **online shopping application** developed using **Spring Boot**. The system is designed to manage essential features of an e-commerce platform, including user authentication, product browsing, filtering, ordering, and payment processing. The database is populated with real product data based on a dataset inspired by **Amazon product listings**.
 
 ##  Technologies Used
 
@@ -9,7 +9,7 @@ This is a backend project for an e-commerce application developed using **Spring
 * **Spring Security** – For authentication and authorization using JWT
 * **Spring Data JPA** – For data persistence and repository abstraction
 * **Hibernate** – ORM tool for database interaction
-* **MySQL** – Relational database for storing application data
+* **PostgreSQL** – Relational database used for storing application data
 * **Lombok** – To reduce boilerplate code
 * **Validation API** – For input validation
 * **Maven** – For dependency management and build automation
@@ -28,11 +28,17 @@ This is a backend project for an e-commerce application developed using **Spring
 * **Product Management**
   CRUD operations for products including price, description, stock, and images.
 
+* **Product Filtering**
+  Filter products by category, price range, and other attributes.
+
 * **Order Management**
-  Basic structure for handling order creation and status tracking.
+  Full order lifecycle including cart handling, order creation, and status tracking.
+
+* **Payment Integration**
+  Basic structure for processing payments during checkout (integration-ready).
 
 * **DTO Usage**
-  Clean separation between entity and API layers using DTOs.
+  Manual mapping between entities and DTOs to maintain clean API and service layers.
 
 * **Exception Handling**
   Centralized error responses with proper HTTP status codes and messages.
