@@ -1,6 +1,5 @@
 package com.workintech.fizzystore.service;
 
-import com.workintech.fizzystore.entity.Order;
 import com.workintech.fizzystore.entity.Product;
 import com.workintech.fizzystore.exceptions.FizzyStoreException;
 import com.workintech.fizzystore.repository.ProductRepository;
@@ -78,13 +77,60 @@ public class ProductServiceImplementation implements ProductService{
         productRepository.deleteById(id);
     }
 
-    @Override
-    public List<Product> sortByPriceAsc() {
-        return productRepository.findAllByOrderByPriceAsc();
-    }
 
     @Override
-    public List<Product> sortByPriceDesc() {
-        return productRepository.findAllByOrderByPriceDesc();
+    public List<Product> getProducts(Long categoryId, String sort) {
+
+        if (categoryId != null && sort != null) {
+            return getSortedAndFiltered(categoryId, sort);
+        } else if (categoryId != null) {
+            return productRepository.findByCategoryId(categoryId);
+        } else if (sort != null) {
+            return sortByPrice(sort);
+        } else {
+            return productRepository.findAll();
+        }
     }
+
+    private List<Product> sortByPrice(String sort) {
+
+        String[] parts = sort.split(":");
+        String field = parts[0];
+        String direction = parts.length > 1 ? parts[1] : "asc";
+
+        return switch (field.toLowerCase()) {
+            case "price" -> "desc".equalsIgnoreCase(direction)
+                    ? productRepository.findAllByOrderByPriceDesc()
+                    : productRepository.findAllByOrderByPriceAsc();
+            case "rating" -> "desc".equalsIgnoreCase(direction)
+                    ? productRepository.findAllByOrderByRatingDesc()
+                    : productRepository.findAllByOrderByRatingAsc();
+            default -> productRepository.findAll();
+        };
+    }
+
+    private List<Product> getSortedAndFiltered(Long categoryId, String sort) {
+        //shop/:gender/:categoryName/:categoryId
+        //products?sort=price:desc
+
+        String[] parts = sort.split(":");
+        String field = parts[0];
+        String direction = parts.length > 1 ? parts[1] : "asc";
+
+        return switch (field.toLowerCase()) {
+
+            case "price" -> "desc".equalsIgnoreCase(direction)
+
+                    ? productRepository.findByCategoryIdOrderByPriceDesc(categoryId)
+                    : productRepository.findByCategoryIdOrderByPriceAsc(categoryId);
+
+            case "rating" -> "desc".equalsIgnoreCase(direction)
+
+                    ? productRepository.findByCategoryIdOrderByRatingDesc(categoryId)
+                    : productRepository.findByCategoryIdOrderByRatingAsc(categoryId);
+
+            default -> productRepository.findByCategoryId(categoryId);
+        };
+    }
+
 }
