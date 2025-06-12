@@ -2,6 +2,8 @@ package com.workintech.fizzystore.service;
 
 
 import com.workintech.fizzystore.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.parameters.P;
 
 import java.util.List;
@@ -15,4 +17,7 @@ public interface ProductService {
     void deleteById(Long id);
 
     List<Product> getProducts(Long categoryId, String sort);
+    Page<Product> getProducts(Long categoryId, String sort, Pageable pageable);
+
+
 }

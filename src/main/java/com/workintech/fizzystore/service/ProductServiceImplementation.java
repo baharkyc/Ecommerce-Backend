@@ -4,10 +4,13 @@ import com.workintech.fizzystore.entity.Product;
 import com.workintech.fizzystore.exceptions.FizzyStoreException;
 import com.workintech.fizzystore.repository.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -81,6 +84,7 @@ public class ProductServiceImplementation implements ProductService{
     @Override
     public List<Product> getProducts(Long categoryId, String sort) {
 
+        // No pagination, returns List<Product>
         if (categoryId != null && sort != null) {
             return getSortedAndFiltered(categoryId, sort);
         } else if (categoryId != null) {
@@ -91,6 +95,23 @@ public class ProductServiceImplementation implements ProductService{
             return productRepository.findAll();
         }
     }
+
+
+    @Override
+    public Page<Product> getProducts(Long categoryId, String sort, Pageable pageable) {
+
+        // Pagination, returns Page<Product> dön
+        if (categoryId != null && sort != null) {
+            return getSortedAndFilteredPageable(categoryId, sort, pageable);
+        } else if (categoryId != null) {
+            return productRepository.findByCategoryId(categoryId, pageable);
+        } else if (sort != null) {
+            return sortByPricePageable(sort, pageable);
+        } else {
+            return productRepository.findAll(pageable);
+        }
+    }
+
 
     private List<Product> sortByPrice(String sort) {
 
@@ -109,8 +130,25 @@ public class ProductServiceImplementation implements ProductService{
         };
     }
 
+    private Page<Product> sortByPricePageable(String sort, Pageable pageable) {
+
+        String[] parts = sort.split(":");
+        String field = parts[0];
+        String direction = parts.length > 1 ? parts[1] : "asc";
+
+        return switch (field.toLowerCase()) {
+            case "price" -> "desc".equalsIgnoreCase(direction)
+                    ? productRepository.findAllByOrderByPriceDesc(pageable)
+                    : productRepository.findAllByOrderByPriceAsc(pageable);
+            case "rating" -> "desc".equalsIgnoreCase(direction)
+                    ? productRepository.findAllByOrderByRatingDesc(pageable)
+                    : productRepository.findAllByOrderByRatingAsc(pageable);
+            default -> productRepository.findAll(pageable);
+        };
+    }
+
     private List<Product> getSortedAndFiltered(Long categoryId, String sort) {
-        //shop/:gender/:categoryName/:categoryId
+        //shop/:categoryId
         //products?sort=price:desc
 
         String[] parts = sort.split(":");
@@ -130,6 +168,30 @@ public class ProductServiceImplementation implements ProductService{
                     : productRepository.findByCategoryIdOrderByRatingAsc(categoryId);
 
             default -> productRepository.findByCategoryId(categoryId);
+        };
+    }
+
+    private Page<Product> getSortedAndFilteredPageable(Long categoryId, String sort, Pageable pageable) {
+        //shop/:categoryId
+        //products?sort=price:desc
+
+        String[] parts = sort.split(":");
+        String field = parts[0];
+        String direction = parts.length > 1 ? parts[1] : "asc";
+
+        return switch (field.toLowerCase()) {
+
+            case "price" -> "desc".equalsIgnoreCase(direction)
+
+                    ? productRepository.findByCategoryIdOrderByPriceDesc(categoryId, pageable)
+                    : productRepository.findByCategoryIdOrderByPriceAsc(categoryId, pageable);
+
+            case "rating" -> "desc".equalsIgnoreCase(direction)
+
+                    ? productRepository.findByCategoryIdOrderByRatingDesc(categoryId, pageable)
+                    : productRepository.findByCategoryIdOrderByRatingAsc(categoryId, pageable);
+
+            default -> productRepository.findByCategoryId(categoryId, pageable);
         };
     }
 
