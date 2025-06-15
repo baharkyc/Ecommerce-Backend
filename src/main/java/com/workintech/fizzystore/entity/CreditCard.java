@@ -40,7 +40,7 @@ public class CreditCard {
     private Long expireMonth;
 
     @Column(name = "expire_year")
-    private String expireYear;
+    private Long expireYear;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
