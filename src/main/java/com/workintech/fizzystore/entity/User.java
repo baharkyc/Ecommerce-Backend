@@ -43,6 +43,8 @@ public class User implements UserDetails {
     @JsonIgnore
     private String password;
 
+
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "user_roles",
@@ -57,6 +59,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<CreditCard> creditCardList;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Order> ordersList;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
