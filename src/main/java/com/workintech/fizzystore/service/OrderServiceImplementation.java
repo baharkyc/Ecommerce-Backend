@@ -52,6 +52,9 @@ public class OrderServiceImplementation implements OrderService{
         if (order.getProducts() != null) {
             orderToUpdate.setProducts(order.getProducts());
         }
+        if (order.getUser() != null) {
+            orderToUpdate.setUser(order.getUser());
+        }
 
         return orderRepository.save(orderToUpdate);
     }

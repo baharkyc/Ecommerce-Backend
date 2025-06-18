@@ -30,8 +30,13 @@ public class Order {
     @JoinColumn(name = "credit_card_id")
     private CreditCard creditCard;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(name = "price")
     private BigDecimal price;
+
 
     @ManyToMany
     @JoinTable(
