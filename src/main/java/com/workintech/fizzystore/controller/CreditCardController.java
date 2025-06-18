@@ -6,13 +6,14 @@ import com.workintech.fizzystore.entity.CreditCard;
 import com.workintech.fizzystore.service.CreditCardService;
 import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/card")
+@RequestMapping("/cards")
 public class CreditCardController {
 
     private final CreditCardService creditCardService;
@@ -32,7 +33,8 @@ public class CreditCardController {
                         card.getNameOnCard(),
                         card.getCardNo(),
                         card.getExpireMonth(),
-                        card.getExpireYear()
+                        card.getExpireYear(),
+                        card.getUser().getId()
                 )).toList();
     }
 
@@ -45,7 +47,32 @@ public class CreditCardController {
                 creditCard.getNameOnCard(),
                 creditCard.getCardNo(),
                 creditCard.getExpireMonth(),
-                creditCard.getExpireYear());
+                creditCard.getExpireYear(),
+                creditCard.getUser().getId());
+    }
+
+    @PostMapping("/")
+    @ResponseStatus(HttpStatus.CREATED) //201
+    public CreditCardResponseDto saveCreditCard(@Validated @RequestBody CreditCardRequestDto creditCardRequestDto) {
+
+        CreditCard card = new CreditCard();
+        card.setNameOnCard(creditCardRequestDto.getNameOnCard());
+        card.setCardNo(creditCardRequestDto.getCardNo());
+        card.setExpireMonth(creditCardRequestDto.getExpireMonth());
+        card.setExpireYear(creditCardRequestDto.getExpireYear());
+        card.setUser(creditCardRequestDto.getUser());
+
+
+        CreditCard savedCard = creditCardService.create(card);
+
+        return new CreditCardResponseDto(
+                card.getId(),
+                card.getNameOnCard(),
+                card.getCardNo(),
+                card.getExpireMonth(),
+                card.getExpireYear(),
+                card.getUser().getId()
+        );
     }
 
     @PutMapping("/{id}")
@@ -65,6 +92,8 @@ public class CreditCardController {
         if(creditCardRequestDto.getExpireYear() != null)
             creditCard.setExpireYear(creditCardRequestDto.getExpireYear());
 
+        if(creditCardRequestDto.getUser() != null)
+            creditCard.setUser(creditCardRequestDto.getUser());
 
 
         CreditCard updatedCreditCard = creditCardService.update(id, creditCard);
@@ -73,7 +102,8 @@ public class CreditCardController {
                 updatedCreditCard.getNameOnCard(),
                 updatedCreditCard.getCardNo(),
                 updatedCreditCard.getExpireMonth(),
-                updatedCreditCard.getExpireYear());
+                updatedCreditCard.getExpireYear(),
+                updatedCreditCard.getUser().getId());
     }
 
     @DeleteMapping("{id}")

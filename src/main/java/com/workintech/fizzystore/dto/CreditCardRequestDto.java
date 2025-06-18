@@ -1,5 +1,6 @@
 package com.workintech.fizzystore.dto;
 
+import com.workintech.fizzystore.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,4 +33,6 @@ public class CreditCardRequestDto {
     private Long expireMonth;
 
     private Long expireYear;
+
+    private User user;
 }
