@@ -2,10 +2,14 @@ package com.workintech.fizzystore.controller;
 
 import com.workintech.fizzystore.dto.AddressRequestDto;
 import com.workintech.fizzystore.dto.AddressResponseDto;
+import com.workintech.fizzystore.dto.CreditCardRequestDto;
+import com.workintech.fizzystore.dto.CreditCardResponseDto;
 import com.workintech.fizzystore.entity.Address;
+import com.workintech.fizzystore.entity.CreditCard;
 import com.workintech.fizzystore.service.AddressService;
 import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -87,6 +91,37 @@ public class AddressController {
         address.setNeighborhood(addressRequestDto.getNeighborhood());
         address.setAddress(addressRequestDto.getAddress());
         return address;
+    }
+
+
+    @PostMapping("/")
+    @ResponseStatus(HttpStatus.CREATED) //201
+    public AddressResponseDto saveAddress(@Validated @RequestBody AddressRequestDto addressRequestDto) {
+
+        Address address = new Address();
+        address.setTitle(addressRequestDto.getTitle());
+        address.setNeighborhood(addressRequestDto.getName());
+        address.setSurname(addressRequestDto.getSurname());
+        address.setPhoneNumber(addressRequestDto.getPhoneNumber());
+        address.setCity(addressRequestDto.getCity());
+        address.setDistrict(addressRequestDto.getDistrict());
+        address.setNeighborhood(addressRequestDto.getNeighborhood());
+        address.setAddress(addressRequestDto.getAddress());
+
+
+        Address savedAddress = addressService.create(address);
+
+        return new AddressResponseDto(
+                savedAddress.getId(),
+                savedAddress.getTitle(),
+                savedAddress.getName(),
+                savedAddress.getSurname(),
+                savedAddress.getPhoneNumber(),
+                savedAddress.getCity(),
+                savedAddress.getDistrict(),
+                savedAddress.getNeighborhood(),
+                savedAddress.getAddress()
+        );
     }
 
     @PutMapping("/{id}")
